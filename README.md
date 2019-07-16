@@ -25,3 +25,14 @@
 |3|Delete_a_comment|/videos/:vid-id/comment/:comment-id|DELETE|204,400,401,403,500|
 
 
+### リクエストデーターフロー
+
+```cassandraql
+
+handler->validation{1.request,2.user}->business logic->reponse.
+
+```
+ - data model
+ - error handling
+
+
