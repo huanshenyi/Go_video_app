@@ -34,5 +34,48 @@ handler->validation{1.request,2.user}->business logic->reponse.
 ```
  - data model
  - error handling
+ 
+ ### DB設計
+  
+ #### users
+ 
+ |カラム名|タイプ|||
+ |---|---|---|---|
+ |id|UNSIGNED INT|PRIMARY KEY|AUTO_INCREMENT|
+ |login_name|VARCHAR(64)|UNIQUE KEY|
+ |pwd|TEXT|||
+ 
+ #### video_info
 
+  |カラム名|タイプ|||
+  |---|---|---|---|
+  |id|VARCHAR(64)|PRIMARY KEY|NOT NULL|
+  |author_id|UNSIGNED INT||
+  |name|TEXT|||
+  |display_ctime|TEXT|
+  |create_time|DATETIME|
+  
+
+ - idをvarcharにするのはオーバー問題を防ぐ為に
+ - author_idは外部キー、でもテーブル関連は敢えてcodeで実現
+ 
+ #### comment
+ 
+|カラム名|タイプ|||
+  |---|---|---|---|
+  |id|VARCHAR(64)|PRIMARY KEY|NOT NULL|
+  |video_id|VARCHAR(64)||
+  |author_id|UNSIGNED INT|||
+  |content|TEXT|
+  |time|DATETIME|
+  
+#### sessions
+
+|カラム名|タイプ|||||
+|---|---|---|---|---|---|
+|session_id|TINYTEXT|PRIMARY KEY|NOT NULL|
+|TTL |TINYTEXT|
+|login_name|VARCHAR(64)|  
+
+- TTL セッション切れる時間
 
