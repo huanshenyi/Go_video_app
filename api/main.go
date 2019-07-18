@@ -1,7 +1,7 @@
 package main
 
 import (
-	"awesomeProject/govideo/api/handlers"
+	"Go_video_app/api/handlers"
 	"github.com/julienschmidt/httprouter"
 	"net/http"
 )

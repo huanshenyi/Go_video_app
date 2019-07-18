@@ -2,8 +2,8 @@ package dbops
 
 import (
 	"database/sql"
-	_"github.com/go-sql-driver/mysql"
 	"log"
+	_"github.com/go-sql-driver/mysql"
 )
 
 
@@ -13,19 +13,26 @@ func AddUserCredential(loginName string, pwd string) error {
     	return err
 	}
 
-    stmtIns.Exec(loginName, pwd)
-    stmtIns.Close()
+    _,err = stmtIns.Exec(loginName, pwd)
+    if err != nil{
+    	return err
+	}
+    defer stmtIns.Close()
     return nil
 }
 
 func GetUserCredential(loginName string) (string, error) {
-	stmtOut,err:=dbConn.Prepare("SELECT pwd FROM users WHENEVER login_name=?")
+	stmtOut,err:=dbConn.Prepare("SELECT pwd FROM users WHERE login_name=?")
 	if err != nil{
 		log.Printf("%s" ,err)
 		return "", err
 	}
 	var pwd string
-	stmtOut.QueryRow(loginName).Scan(&pwd)
+	// 空のrowオブジェクト返す場合もある
+	err = stmtOut.QueryRow(loginName).Scan(&pwd)
+	if err != nil && err != sql.ErrNoRows{
+       return "",err
+	}
 	stmtOut.Close()
 	return pwd,nil
 
@@ -38,7 +45,10 @@ func DeleteUser(loginName string, pwd string) error {
     	return err
 	}
 
-	stmtDel.Exec(loginName,pwd)
-    stmtDel.Close()
+	_,err = stmtDel.Exec(loginName,pwd)
+	if err != nil{
+		return err
+	}
+    defer stmtDel.Close()
     return nil
 }
