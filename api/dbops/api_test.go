@@ -1,6 +1,11 @@
 package dbops
 
-import "testing"
+import (
+	"fmt"
+	"strconv"
+	"testing"
+	"time"
+)
 
 var tempvid string
 
@@ -90,5 +95,35 @@ func testRegeVideoInfo(t *testing.T)  {
 	vi, err := GetVideoInfo(tempvid)
 	if err != nil || vi != nil{
 		t.Errorf("Error of RegeVideoInfo %v",err)
+	}
+}
+
+func TestComments(t *testing.T)  {
+	clearTables()
+	t.Run("AddUser", testAddUser)
+	t.Run("AddComments", testAddComments)
+	t.Run("ListComments", testListComments)
+}
+
+func testAddComments(t *testing.T)  {
+	vid := "12345"
+	aid := 1
+	content := "i like is video"
+	err := AddNewComments(vid,aid,content)
+	if err != nil{
+		t.Errorf("Error of AddComments: %v",err)
+	}
+}
+
+func testListComments(t *testing.T) {
+	vid := "12345"
+	from := 1514764800
+	to, _ := strconv.Atoi(strconv.FormatInt(time.Now().UnixNano()/1000000000,10))
+	res,err := ListComments(vid, from,to)
+	if err !=nil{
+		t.Errorf("Error of ListComments: %v",err)
+	}
+	for i, ele :=range res{
+		fmt.Printf("comment: %d,%v\n",i,ele)
 	}
 }
